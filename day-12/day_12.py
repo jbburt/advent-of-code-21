@@ -13,27 +13,26 @@ with open('day-12/input.txt', 'r') as fp:
         if a != 'start' and b != 'end':
             edges[b].add(a)
 
-paths = set()
-stack = deque([('start',)])
+npaths = 0
+stack = {('start',)}
 while stack:
-    path = stack.popleft()
+    path = stack.pop()
     for there in edges[path[-1]]:
         if there == 'end':
-            paths.add(path + (there,))
+            npaths += 1
         elif there not in path or there.isupper():
-            stack.append(path + (there,))
-print(f'problem 1: {len(paths)}')
+            stack.add(path + (there,))
+print(f'problem 1: {npaths}')
 
-
-paths = set()
-stack = deque([(False, 'start')])
+npaths = 0
+stack = {(False, 'start')}
 while stack:
-    path = stack.popleft()
+    path = stack.pop()
     for there in edges[path[-1]]:
         if there == 'end':
-            paths.add(path[1:] + (there,))
-        elif there not in path or there.isupper():
-            stack.append(path + (there,))
+            npaths += 1
+        elif there.isupper() or there not in path:
+            stack.add(path + (there,))
         elif not path[0]:
-            stack.append((True,) + path[1:] + (there,))
-print(f'problem 2: {len(paths)}')
+            stack.add((True,) + path[1:] + (there,))
+print(f'problem 2: {npaths}')
