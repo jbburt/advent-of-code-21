@@ -2,28 +2,22 @@
 https://adventofcode.com/2021/day/12
 """
 from collections import defaultdict
+from collections import deque
 
 edges = defaultdict(set)
-vertices = set()
 with open('day-12/input.txt', 'r') as fp:
-    lines = fp.read().split('\n')
-    for line in lines:
+    for line in fp.read().split('\n'):
         a, b = line.split('-')
-        vertices.add(a)
-        vertices.add(b)
         if a != 'end' and b != 'start':
             edges[a].add(b)
         if a != 'start' and b != 'end':
             edges[b].add(a)
 
 paths = set()
-stack = [('start',)]
+stack = deque([('start',)])
 while stack:
-    path = stack.pop(0)
-    if path in paths:
-        continue
-    here = path[-1]
-    for there in edges[here]:
+    path = stack.popleft()
+    for there in edges[path[-1]]:
         if there == 'end':
             paths.add(path + (there,))
         elif there not in path or there.isupper():
@@ -32,13 +26,10 @@ print(f'problem 1: {len(paths)}')
 
 
 paths = set()
-stack = [(False, 'start')]
+stack = deque([(False, 'start')])
 while stack:
-    path = stack.pop(0)
-    if path in paths:
-        continue
-    here = path[-1]
-    for there in edges[here]:
+    path = stack.popleft()
+    for there in edges[path[-1]]:
         if there == 'end':
             paths.add(path[1:] + (there,))
         elif there not in path or there.isupper():
