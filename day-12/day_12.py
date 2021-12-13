@@ -21,23 +21,27 @@ with open('day-12/input.txt', 'r') as fp:
 npaths = 0
 stack = deque([({'start'}, 'start')])
 while stack:
-    elements, last = stack.pop()
+    small_caves, last = stack.pop()
     for next_elem in edges[last]:
         if next_elem == 'end':
             npaths += 1
-        elif isupper[next_elem] or next_elem not in elements:
-            stack.append((elements.union({next_elem}), next_elem))
+        elif isupper[next_elem]:
+            stack.append((small_caves, next_elem))
+        elif next_elem not in small_caves:
+            stack.append((small_caves | {next_elem}, next_elem))
 print(f'problem 1: {npaths}')
 
 npaths = 0
 stack = deque([(False, {'start'}, 'start')])
 while stack:
-    has_double, elements, last = stack.pop()
+    has_double, small_caves, last = stack.pop()
     for next_elem in edges[last]:
         if next_elem == 'end':
             npaths += 1
-        elif isupper[next_elem] or next_elem not in elements:
-            stack.append((has_double, elements.union({next_elem}), next_elem))
-        elif not has_double:
-            stack.append((True, elements.union({next_elem}), next_elem))
+        elif isupper[next_elem]:  # don't need to keep track of cave
+            stack.append((has_double, small_caves, next_elem))
+        elif next_elem not in small_caves:  # do need to keep track
+            stack.append((has_double, small_caves | {next_elem}, next_elem))
+        elif not has_double:  # change boolean flag
+            stack.append((True, small_caves, next_elem))
 print(f'problem 2: {npaths}')
