@@ -50,7 +50,6 @@ xfolds = [i for i, x in enumerate(instructions) if x[0] == 'x']
 yfolds = [i for i, x in enumerate(instructions) if x[0] == 'y']
 width = instructions[xfolds[-1]][1]
 height = instructions[yfolds[-1]][1]
-char_width = width / 8
 
 # binary grid
 grid = np.zeros((height + 2, width + 1))
