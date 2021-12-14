@@ -1,5 +1,5 @@
 """
-https://adventofcode.com/2021/day/12
+https://adventofcode.com/2021/day/13
 """
 import time
 
@@ -10,7 +10,7 @@ from PIL import Image
 
 t0 = time.time()
 
-with open('day-13/input.txt', 'r') as fp:
+with open('day-13/test_input.txt', 'r') as fp:
     lines = fp.read().split('\n')
     points = list()
     instructions = list()
