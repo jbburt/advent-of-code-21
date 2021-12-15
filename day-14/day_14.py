@@ -15,7 +15,7 @@ for k, v in rules.items():
     chars |= set(k).union(v)
 
 # running tally of the number of each character pair
-pairs = set(map(lambda x: "".join(a for a in x), list(product(chars, chars))))
+pairs = set(map(lambda x: "".join(x), list(product(chars, chars))))
 npairs = {p: 0 for p in pairs}
 for i in range(len(template) - 1):
     npairs[template[i:i + 2]] += 1
