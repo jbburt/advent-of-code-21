@@ -76,3 +76,32 @@ while unvisited:
 
 print('p2:', dist[(nr - 1, nc - 1)])
 print('time:', time() - t0)
+
+
+# now let's do it BIGLY FAST -- thanks reddit
+from skimage.graph import route_through_array
+
+t0 = time()
+with open('day-15/input.txt', 'r') as fp:
+    data = np.array([list(map(int, line)) for line in fp.read().split('\n')])
+
+start = data[0, 0]
+data[0, 0] = 0
+nr, nc = data.shape
+
+_, p1 = route_through_array(
+    data, (0, 0), (nr - 1, nc - 1), fully_connected=False, geometric=False)
+print(p1)
+
+data[0, 0] = start
+big_data = np.tile(data, (5, 5))
+x = (np.arange(nr * 5) / nr).astype(int)
+increment = np.add.outer(x, x).astype(int)
+big_data += increment.astype(int)
+big_data = np.mod(big_data - 1, 9) + 1
+big_data[0, 0] = 0
+nr, nc = big_data.shape
+_, p2 = route_through_array(
+    big_data, (0, 0), (nr - 1, nc - 1), fully_connected=False, geometric=False)
+print(p2)
+print('time:', time() - t0)
